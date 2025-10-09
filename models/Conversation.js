@@ -1,34 +1,24 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
-const User = require("./User");
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
+import User from './User.js';
 
-const Conversation = sequelize.define("Conversation", {
+const Conversation = sequelize.define('Conversation', {
   id: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true,
   },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: "Users", key: "id" },
-    onDelete: "CASCADE",
-  },
-  role: {
-    type: DataTypes.ENUM("user", "assistant"),
-    allowNull: false,
-  },
-  content: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  createdAt: {
+  created: {
     type: DataTypes.DATE,
+    allowNull: false,
     defaultValue: DataTypes.NOW,
   },
+}, {
+  tableName: 'conversations',
+  timestamps: false,
 });
 
-User.hasMany(Conversation, { foreignKey: "userId" });
-Conversation.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Conversation, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Conversation.belongsTo(User, { foreignKey: 'userId' });
 
-module.exports = Conversation;
+export default Conversation;
