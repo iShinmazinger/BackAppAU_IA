@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import { sendMessage } from "../controllers/chatController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const { sendMessage } = require("../controllers/chatController");
-const authMiddleware = require("../middleware/authMiddleware");
 
 router.post("/send", authMiddleware, sendMessage);
 
-module.exports = router;
+export default router;
