@@ -3,7 +3,7 @@ import CropUpdate from "../models/CropUpdate.js";
 
 export const createCropUpdate = async (req, res) => {
   try {
-    const { crop_id, status, notes, image_url } = req.body;
+    const { crop_id, status, notes, image_url, date  } = req.body;
     const userId = req.user.id;
 
     if (!crop_id || !status) {
@@ -20,6 +20,7 @@ export const createCropUpdate = async (req, res) => {
       status,
       notes,
       image_url,
+      date,
     });
 
     res.status(201).json(newUpdate);
@@ -70,5 +71,43 @@ export const deleteCropUpdate = async (req, res) => {
   } catch (error) {
     console.error("Error al eliminar actualización:", error);
     res.status(500).json({ message: "Error al eliminar actualización" });
+  }
+};
+
+export const updateCropUpdate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, notes, image_url, date } = req.body;
+    const userId = req.user.id;
+
+    const cropUpdate = await CropUpdate.findByPk(id, {
+      include: {
+        model: Crop,
+        attributes: ["id", "userId"],
+      },
+    });
+
+    if (!cropUpdate) {
+      return res.status(404).json({ message: "Actualización no encontrada" });
+    }
+
+    if (cropUpdate.Crop.userId !== userId) {
+      return res.status(403).json({ message: "No autorizado para modificar esta actualización" });
+    }
+
+    if (status) cropUpdate.status = status;
+    if (notes) cropUpdate.notes = notes;
+    if (image_url) cropUpdate.image_url = image_url;
+    if (date) cropUpdate.date = date;
+
+    await cropUpdate.save();
+
+    res.json({
+      message: "Actualización de cultivo modificada correctamente",
+      cropUpdate,
+    });
+  } catch (error) {
+    console.error("Error al modificar cropUpdate:", error);
+    res.status(500).json({ message: "Error del servidor", error });
   }
 };

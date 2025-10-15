@@ -17,11 +17,11 @@ const CropUpdate = sequelize.define("CropUpdate", {
     },
     onDelete: "CASCADE",
   },
-  status: {
+  status: {                  //tipo de entrada
     type: DataTypes.STRING,
     allowNull: false,
   },
-  notes: {
+  notes: {                   //descripcion
     type: DataTypes.TEXT,
     allowNull: true,
   },
@@ -29,6 +29,10 @@ const CropUpdate = sequelize.define("CropUpdate", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    },
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,

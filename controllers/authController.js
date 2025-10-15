@@ -42,3 +42,44 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Error en el login", error });
   }
 };
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { nombre, distrito } = req.body;
+
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if (nombre) user.nombre = nombre;
+    if (distrito) user.distrito = distrito;
+
+    await user.save();
+
+    res.json({ message: "Usuario actualizado correctamente", user });
+  } catch (error) {
+    console.error("Error al actualizar usuario:", error);
+    res.status(500).json({ message: "Error del servidor", error });
+  }
+};
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const { id } = req.user; 
+    const user = await User.findByPk(id, {
+      attributes: ["id", "nombre", "usuario", "distrito", "email"],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json({ user });
+  } catch (error) {
+    console.error("Error al obtener perfil de usuario:", error);
+    res.status(500).json({ message: "Error del servidor" });
+  }
+};
