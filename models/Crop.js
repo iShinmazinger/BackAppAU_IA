@@ -22,6 +22,10 @@ const Crop = sequelize.define("Crop",
       type: DataTypes.STRING,
       allowNull: false,
     },
+    tipo: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     startdate: {
       type: DataTypes.DATEONLY,
       allowNull: false,

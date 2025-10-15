@@ -16,6 +16,18 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  nombre: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  usuario: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  distrito: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 },
 {
     tableName: "users",

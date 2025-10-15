@@ -4,9 +4,9 @@ import User from '../models/User.js';
 
 export const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, nombre, usuario, distrito } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !nombre || !usuario || !distrito) {
       return res.status(400).json({ message: "Todos los campos son requeridos" });
     }
 
@@ -17,7 +17,7 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ email, password: hashedPassword });
+    const user = await User.create({ email, password: hashedPassword, nombre, usuario, distrito });
 
     res.status(201).json({ message: "Usuario registrado", user });
   } catch (error) {
@@ -27,9 +27,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { usuario, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { usuario } });
     if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
     const isMatch = await bcrypt.compare(password, user.password);

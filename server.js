@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 import sequelize from "./config/database.js";
 import authRoutes from "./routes/authRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
-import cropRoutes from "./routes/cropRoutes.js"; 
+import cropRoutes from "./routes/cropRoutes.js";
+import cropUpdateRoutes from "./routes/cropUpdateRoutes.js";
+
 
 dotenv.config();
 
@@ -16,6 +18,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/crops", cropRoutes);
+app.use("/api/crop-updates", cropUpdateRoutes);
+
 
 sequelize.sync().then(() => {
   console.log("Base de datos sincronizada");

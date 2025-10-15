@@ -2,9 +2,9 @@ import Crop from "../models/Crop.js";
 
 export const createCrop = async (req, res) => {
   try {
-    const { userId, name, startdate } = req.body;
+    const { userId, name, startdate, tipo } = req.body;
 
-    const newCrop = await Crop.create({ userId, name, startdate });
+    const newCrop = await Crop.create({ userId, name, startdate, tipo });
     res.status(201).json(newCrop);
   } catch (error) {
     console.error(error);
