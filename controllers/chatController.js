@@ -63,3 +63,44 @@ export const sendMessage = async (req, res) => {
     });
   }
 };
+
+export const getUserConversations = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const conversations = await Conversation.findAll({
+      where: { userId },
+      order: [["created", "DESC"]],
+    });
+
+    res.json({ conversations });
+  } catch (error) {
+    console.error("Error al obtener conversaciones:", error);
+    res.status(500).json({ message: "Error del servidor" });
+  }
+};
+
+export const getConversationMessages = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const conversation = await Conversation.findOne({
+      where: { id, userId },
+    });
+
+    if (!conversation) {
+      return res.status(404).json({ message: "Conversación no encontrada o no autorizada" });
+    }
+
+    const messages = await Message.findAll({
+      where: { conversationId: id },
+      order: [["created_at", "ASC"]],
+    });
+
+    res.json({ conversation, messages });
+  } catch (error) {
+    console.error("Error al obtener mensajes:", error);
+    res.status(500).json({ message: "Error del servidor" });
+  }
+};
