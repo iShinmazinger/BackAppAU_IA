@@ -2,7 +2,8 @@ import Crop from "../models/Crop.js";
 
 export const createCrop = async (req, res) => {
   try {
-    const { userId, name, startdate, tipo, ubicacion, etapa } = req.body;
+    const userId = req.user.id;
+    const { name, startdate, tipo, ubicacion, etapa } = req.body;
 
     const newCrop = await Crop.create({ userId, name, startdate, tipo, ubicacion, etapa });
     res.status(201).json(newCrop);
@@ -14,7 +15,7 @@ export const createCrop = async (req, res) => {
 
 export const getCropsByUser = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const crops = await Crop.findAll({ where: { userId } });
     res.json(crops);
   } catch (error) {

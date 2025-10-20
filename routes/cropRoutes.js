@@ -4,11 +4,11 @@ import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", createCrop);
+router.post("/", authMiddleware, createCrop);
 
-router.get("/:userId", getCropsByUser);
+router.get("/", authMiddleware, getCropsByUser);
 
-router.delete("/:id", deleteCrop);
+router.delete("/:id", authMiddleware, deleteCrop);
 
 router.put("/:id", authMiddleware, updateCrop);
 
