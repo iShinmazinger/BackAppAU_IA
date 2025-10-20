@@ -53,7 +53,10 @@ export const sendMessage = async (req, res) => {
       content: aiResponse,
     });
 
-    res.json({ content: aiResponse });
+    res.json({ 
+      reply: aiResponse,
+      conversationId: conversation.id 
+    });
 
   } catch (error) {
     console.error('Error en sendMessage:', error.response?.data || error.message);
