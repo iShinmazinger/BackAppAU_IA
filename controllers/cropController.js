@@ -24,6 +24,22 @@ export const getCropsByUser = async (req, res) => {
   }
 };
 
+export const getCropsCrecimiento = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const crops = await Crop.findAll({
+      where: {
+        userId,
+        etapa: 'Crecimiento'
+      }
+    });
+    res.json(crops);
+  } catch (error) {
+    console.error('Error al obtener cultivos en crecimiento:', error);
+    res.status(500).json({ error: 'Error al obtener cultivos en crecimiento' });
+  }
+};
+
 export const deleteCrop = async (req, res) => {
   try {
     const { id } = req.params;
