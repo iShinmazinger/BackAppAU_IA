@@ -5,10 +5,19 @@ import Message from '../models/Message.js';
 export const sendMessage = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { content } = req.body;
+    const { content, conversationId } = req.body;
 
-    let conversation = await Conversation.findOne({ where: { userId } });
-    if (!conversation) {
+    let conversation;
+
+    if (conversationId) {
+      conversation = await Conversation.findOne({
+        where: { id: conversationId, userId },
+      });
+
+      if (!conversation) {
+        return res.status(404).json({ message: "Error en la conversación" });
+      }
+    } else {
       conversation = await Conversation.create({ userId });
     }
 
